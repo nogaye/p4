@@ -1,0 +1,41 @@
+	
+		
+
+img {
+    display: block;
+    margin: auto;
+    width: 20%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.t-circle {
+    color: white;
+    background-color: #5cb85c;
+    display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-weight: normal;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.t-title {
+	
+
+    color: white;
+    background-color: #428bca;
+    /*color: #3c763d;
+    background-color: #d9edf7;*/
+    
+    text-align: center;
+    padding: 20px;
+    margin-bottom: 10px;
+}
+html, body, #map-canvas { height: 100%; margin: 0; padding: 0;}
+    
