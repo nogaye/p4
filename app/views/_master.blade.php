@@ -16,10 +16,13 @@
       html, body, #map-canvas { height: 100%; margin: 0; padding: 0;}
     </style>
 
+     <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js' type='text/javascript'></script>
+
 	 @yield('head')
 
 </head>
-<body class="container">
+<!-- <body  class="container">-->
+<body style="margin:20px">
 
   
 
@@ -46,7 +49,8 @@
         </ul>
     </nav>
 
-            <h3 class="text-muted"> <span  class="fa fa-heart-o fa-3x"></span> <b>Moods</b>: How are you feeling today?</h3>
+             <h3 class="text-muted" style="color:#2d6ca2"> <span  class="fa fa-users fa-3x"></span>
+             <b style="color:#5cb85c">M</b>oo<b style="color:#ec971f">d</b><b style="color:#d9534f">s</b>: How are you feeling today?</h3>
             <hr/>
               @if(Session::get('flash_message'))
         <div class='alert alert-warning'>{{ Session::get('flash_message') }}</div>
@@ -56,8 +60,8 @@
 
 
 
- <div class="container body-content">
-       
+ <div id="content_container" class="body-content" >
+       <!-- <div id="content_container" class="container body-content">-->
 @yield('content')
 
     </div>
@@ -71,7 +75,9 @@
         </div>
 
 
-  <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js' type='text/javascript'></script>
+ 
+
+ 
 
 </body>
 </html>
