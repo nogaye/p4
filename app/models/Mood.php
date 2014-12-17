@@ -30,7 +30,7 @@ class Mood extends Eloquent {
     * Search for current users moods 
     * @return Collection
     */
-    public static function search($userid) {
+    public static function getUserMoods($userid) {
 
         # If there is a query, search the library with that query
         if($userid) {
@@ -38,7 +38,7 @@ class Mood extends Eloquent {
             # Eager load tags and author
             $moods = Mood::with('user')
             ->whereHas('user', function($q) use($userid) {
-                $q->where('name', 'LIKE', "%$userid%");
+                $q->where('name', '=', $userid);
             })       
             ->get();
 
@@ -50,6 +50,23 @@ class Mood extends Eloquent {
             //$moods = Mood::with('tags','author')->get();
         }
 
+        return $moods;
+    }
+
+  /**
+    * Get all moods
+    * @return Collection
+    */
+    public static function getAllMoods() {
+
+            # Eager load tags and author
+            $moods = Mood->where('user', function($q) use($userid) {
+                $q->where('name', 'LIKE', "%$userid%");
+            })       
+            ->get();
+
+
+       
         return $moods;
     }
 
