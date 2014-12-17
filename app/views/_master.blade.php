@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">	
-	 <title>@yield('title', "Developer's Best Friend")</title>
+	 <title>@yield('title', "Moods")</title>
 	   <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" />
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
@@ -30,21 +30,26 @@
             
  <nav>
         <ul class="nav nav-pills pull-right">
+            <li class="active"><a href="/">Home</a></li>
+            <li><a href='/debug'>Debug</a></li>
         @if(Auth::check())
-            <li><a href='/logout'>Log out {{ Auth::user()->email; }}</a></li>
+           <!-- 
             <li><a href='/book'>All Books</a></li>
             <li><a href='/book/search'>Search Books (w/ Ajax)</a></li>
             <li><a href='/tag'>All Tags</a></li>
             <li><a href='/book/create'>+ Add Book</a></li>
             <li><a href='/debug/routes'>Routes</a></li>
+        -->
+        <li><a href='/mymood'>My Moods</a></li>
+        <li><a href='/logout'>Log Out: {{ Auth::user()->first_name; }}</a></li>
         @else           
-            <li class="active"><a href="/">Home</a></li>
-            <li><a href="/users">Users</a></li>
+            
+           <!-- <li><a href="/users">Users</a></li>
             <li><a href="/loremipsum">Lorem Ipsum</a></li>
-             <li><a href='/debug'>Debug</a></li>
-              <li><a href='/mood/create'>+ Add Book</a></li>
-            <li><a href='/signup'>Sign up</a></li>
-            <li><a href='/login'>Log in</a></li>
+            <li><a href='/debug'>Debug</a></li>
+            <li><a href='/mood/create'>+ Add Book</a></li> -->
+            <li><a href='/signup'>Sign Up</a></li>
+            <li><a href='/login'>Log In</a></li>
         @endif
         </ul>
     </nav>
@@ -55,6 +60,7 @@
               @if(Session::get('flash_message'))
         <div class='alert alert-warning'>{{ Session::get('flash_message') }}</div>
     @endif
+        <div style="display:none" id="info_flash" class='alert alert-warning'></div>
         </div>
 
 
@@ -68,7 +74,7 @@
 
 
 
- <div  class="container footer  navbar-fixed-bottom">
+ <div  style="margin:20px" class="footer  navbar-fixed-bottom">
     <hr/>
             <p>© Nicholas Ogaye 2014</p>
             @yield('footer')

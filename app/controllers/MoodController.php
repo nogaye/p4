@@ -9,14 +9,164 @@ class MoodController extends \BaseController {
 	public function __construct() {
 
 		# Make sure BaseController construct gets called
-		parent::__construct();
-
+		
 		$this->beforeFilter('auth', array('except' => ['getIndex','getDigest']));
 
 	}
 
 
+
+
 	/**
+	* Show my moods form, get the loged in users moods
+	* @return View
+	*/
+	public function getUserMoods() {
+
+if (Auth::check())
+{
+
+
+$user_id = Auth::user()->id;
+     $moods = Mood::where('user_id', '=', $user_id) ->get();
+
+   
+		return View::make('moods')->with('moods', $moods);
+	}
+
+	}
+
+	/**
+	* Get all moods on page load
+	* @return View
+	*/
+	public function getMoods() {
+
+		$moods = Mood::all();
+
+   
+		 $response = array(
+            'status' => 'success',
+            'msg' => 'Mood saved successfully',
+            'moods' => $moods  );
+
+            return Response::json( $response );
+
+	}
+
+
+/**
+	* Process the "Add mood form"
+	* @return Redirect
+	*/
+	public function postCreate() {
+
+		 $data = Input::all();
+
+
+
+
+		# Instantiate the mood model
+	$mood = new Mood();
+
+		 //$mood = Mood::firstOrNew(array('lat' => $data->lat, 'lng' => $data->lng ));
+		// $moods = Mood.where('lat', '=', $data->lat)->where('lng', '=', $data->lng)->get();
+
+       $mood_type = MoodType::where('name','=',$data['mood'])->first();
+
+        $mood->mood_type_id = 1;// mood_type->id;
+		$mood->mood = $data['mood'];
+		$mood->lat  = $data['lat'];
+		$mood->lng  = $data['lng'];
+
+if (Auth::check())
+{
+     
+     $mood->user_id = Auth::user()->id;
+}
+else
+{
+	//Use anonymous user id
+	$mood->user_id  = 1;
+}
+
+$mood->save();
+
+
+  $response = array(
+            'status' => 'success',
+            'msg' => 'Mood saved successfully',
+            'data' => $mood  );
+
+            return Response::json( $response );
+
+
+
+	}
+
+/*
+public function addExpense(){
+    $expense = new Expense;
+    $data = Input::all();
+    $isAjax = Request::ajax();
+
+    if ($expense->isValid($data)) {
+        $expense->fill($data);
+        $expense->save();
+        //Recargar la tabla gastos
+        if($isAjax) {
+            // Return your success JSON here
+        } else {
+            return Redirect::to('expense/index')->with('success', 'El gasto ha sido agregado correctamente.');
+        }
+    }
+
+    if($isAjax) {
+        // Return your fail JSON here
+    } else {
+        return Redirect::back()->withInput()->withErrors($expense->errors);
+    }
+}
+
+
+*/
+
+
+
+
+	/**
+	* Display all books
+	* @return View
+	*/
+	public function getIndexbooks() {
+
+		# Format and Query are passed as Query Strings
+		$format = Input::get('format', 'html');
+
+		$query  = Input::get('query');
+
+		$books = Book::search($query);
+
+		# Decide on output method...
+		# Default - HTML
+		if($format == 'html') {
+			return View::make('book_index')
+				->with('books', $books)
+				->with('query', $query);
+		}
+		# JSON
+		elseif($format == 'json') {
+			return Response::json($books);
+		}
+		# PDF (Coming soon)
+		elseif($format == 'pdf') {
+			return "This is the pdf (Coming soon).";
+		}
+
+
+	}
+
+/**
 	* Used as an example for something you might want to set up a cron job for
 	*/
 	public function getDigest() {
@@ -46,40 +196,6 @@ class MoodController extends \BaseController {
 
 	}
 
-
-	/**
-	* Display all books
-	* @return View
-	*/
-	public function getIndex() {
-
-		# Format and Query are passed as Query Strings
-		$format = Input::get('format', 'html');
-
-		$query  = Input::get('query');
-
-		$books = Book::search($query);
-
-		# Decide on output method...
-		# Default - HTML
-		if($format == 'html') {
-			return View::make('book_index')
-				->with('books', $books)
-				->with('query', $query);
-		}
-		# JSON
-		elseif($format == 'json') {
-			return Response::json($books);
-		}
-		# PDF (Coming soon)
-		elseif($format == 'pdf') {
-			return "This is the pdf (Coming soon).";
-		}
-
-
-	}
-
-
 	/**
 	* Show the "Add a book form"
 	* @return View
@@ -93,24 +209,7 @@ class MoodController extends \BaseController {
 	}
 
 
-	/**
-	* Process the "Add a book form"
-	* @return Redirect
-	*/
-	public function postCreate() {
-
-		# Instantiate the book model
-		$book = new Book();
-
-		$book->fill(Input::all());
-		$book->save();
-
-		# Magic: Eloquent
-		$book->save();
-
-		return Redirect::action('BookController@getIndex')->with('flash_message','Your book has been added.');
-
-	}
+	
 
 
 	/**

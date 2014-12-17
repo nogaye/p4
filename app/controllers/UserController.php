@@ -55,6 +55,8 @@ class UserController extends BaseController {
 		$user = new User;
 		$user->email    = Input::get('email');
 		$user->password = Hash::make(Input::get('password'));
+		$user->first_name    = Input::get('first_name');
+		$user->last_name    = Input::get('last_name');
 
 		try {
 			$user->save();
@@ -68,7 +70,7 @@ class UserController extends BaseController {
 		# Log in
 		Auth::login($user);
 
-		$user->sendWelcomeEmail();
+		//$user->sendWelcomeEmail();
 
 		return Redirect::to('/')->with('flash_message', 'Welcome to Foobooks!');
 

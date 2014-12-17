@@ -24,7 +24,6 @@ Route::get('/', function()
 |
 | Thsi code loads the lorem ipsum page after reading the page queries
 |
-*/
 Route::get('/loremipsum', function()
 {
     
@@ -45,6 +44,7 @@ if($number_of_lorem == '')
     return View::make('loremipsum')->with('number_of_lorem', $number_of_lorem)->with('paragraphs', $paragraphs);
 });
 
+*/
 
 /*
 |--------------------------------------------------------------------------
@@ -53,7 +53,7 @@ if($number_of_lorem == '')
 |
 | Loads the user page and reads the page queries
 |
-*/
+
 
 Route::get('/users', function()
 {
@@ -88,7 +88,7 @@ if($include_profile == '')
 });
 
 
-
+*/
 
 
 
@@ -108,21 +108,22 @@ Route::get('/logout', 'UserController@getLogout' );
 * Mood
 * (Explicit Routing)
 */
-Route::get('/mood', 'MoodController@getIndex');
+Route::get('/mymood', 'MoodController@getUserMoods');
+Route::get('/mood', 'MoodController@getMoods');
 
-Route::get('/mood/edit/{id}', 'MoodController@getEdit');
-Route::post('/mood/edit', 'MoodController@postEdit');
+//Route::get('/mood/edit/{id}', 'MoodController@getEdit');
+//Route::post('/mood/edit', 'MoodController@postEdit');
 
-Route::get('/mood/create', 'MoodController@getCreate');
+//Route::get('/mood/create', 'MoodController@getCreate');
 Route::post('/mood/create', 'MoodController@postCreate');
 
-Route::post('/mood/delete', 'MoodController@postDelete');
+//Route::post('/mood/delete', 'MoodController@postDelete');
 
-Route::get('/mood/digest', 'MoodController@getDigest');
+//Route::get('/mood/digest', 'MoodController@getDigest');
 
 ## Ajax examples
-Route::get('/mood/search', 'MoodController@getSearch');
-Route::post('/mood/search', 'MoodController@postSearch');
+//Route::get('/mood/search', 'MoodController@getSearch');
+//Route::post('/mood/search', 'MoodController@postSearch');
 
 /**
 * Debug

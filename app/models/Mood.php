@@ -6,57 +6,51 @@ class Mood extends Eloquent {
     protected $guarded = array('id', 'created_at', 'updated_at');
 
     /**
-    * Book belongs to Author
+    * Mood belongs to User
     * Define an inverse one-to-many relationship.
     */
-	public function author() {
+	public function user() {
 
-        return $this->belongsTo('Author');
+        return $this->belongsTo('User');
 
     }
 
     /**
-    * Books belong to many Tags
+    * Mood belong to mood type
     */
-    public function tags() {
+    public function mood_type() {
 
-        return $this->belongsToMany('Tag');
+        return $this->belongsTo('MoodType');
 
     }
 
+
+
     /**
-    * Search among books, authors and tags
+    * Search for current users moods 
     * @return Collection
     */
-    public static function search($query) {
+    public static function search($userid) {
 
         # If there is a query, search the library with that query
-        if($query) {
+        if($userid) {
 
             # Eager load tags and author
-            $books = Mood::with('tags','author')
-            ->whereHas('author', function($q) use($query) {
-                $q->where('name', 'LIKE', "%$query%");
-            })
-            ->orWhereHas('tags', function($q) use($query) {
-                $q->where('name', 'LIKE', "%$query%");
-            })
-            ->orWhere('title', 'LIKE', "%$query%")
-            ->orWhere('published', 'LIKE', "%$query%")
+            $moods = Mood::with('user')
+            ->whereHas('user', function($q) use($userid) {
+                $q->where('name', 'LIKE', "%$userid%");
+            })       
             ->get();
 
-            # Note on what `use` means above:
-            # Closures may inherit variables from the parent scope.
-            # Any such variables must be passed to the `use` language construct.
 
         }
-        # Otherwise, just fetch all books
+        # Otherwise, just fetch all moods
         else {
             # Eager load tags and author
-            $books = Mood::with('tags','author')->get();
+            //$moods = Mood::with('tags','author')->get();
         }
 
-        return $books;
+        return $moods;
     }
 
 
@@ -81,42 +75,6 @@ class Mood extends Eloquent {
     }
 
 
-    /**
-    *
-    *
-    * @return String
-    */
-    public static function sendDigests($users,$books) {
-
-        $recipients = '';
-
-        $data['books'] = $books;
-
-        foreach($users as $user) {
-
-            $data['user'] = $user;
-
-            /*
-            Mail::send('emails.digest', $data, function($message) {
-
-                $recipient_email = $user->email;
-                $recipient_name  = $user->first_name.' '.$user->last_name;
-                $subject  = 'Foobooks Digest';
-
-                $message->to($recipient_email, $recipient_name)->subject($subject);
-
-            });
-            */
-
-            $recipients .= $user->email.', ';
-
-        }
-
-        $recipients = rtrim($recipients, ',');
-
-        return $recipients;
-
-    }
-
+   
 
 }

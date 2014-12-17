@@ -21,8 +21,9 @@ class CreateMoodsTable extends Migration {
 			# General data...			
 			$table->integer('user_id')->unsigned(); # Important! FK has to be unsigned because the PK it will reference is auto-incrementing		
 			$table->integer('mood_type_id')->unsigned(); # Important! FK has to be unsigned because the PK it will reference is auto-incrementing	
-			$table->string('message');		
-			$table->string('ip_address');
+			$table->string('mood');		
+			$table->string('lat');
+			$table->string('lng');
 			
 			# Define foreign keys...
 			$table->foreign('mood_type_id')->references('id')->on('mood_types');
