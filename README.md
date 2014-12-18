@@ -10,7 +10,7 @@ Live demo to be performed during section.
 
 ## Details for teaching team
 * On the homepage dashboard, click on the image that reflects the current mood. This action **CREATES** the mood in the database and also updates the mood on the map using the current geolocation. 
-*When a new mood entry is made from the same geolocation, the new entry **UPDATES** and overwrites the old one.
+* When a new mood entry is made from the same geolocation, the new entry **UPDATES** and overwrites the old one.
 * Login is required to **VIEW** and **DELETE** moods from My Moods tab. Please create a user account first.
 * Geolocation tracking has to be enabled on the browser for tracking to work. 
 * Green is happy, red is sad and yellow is meh. 
