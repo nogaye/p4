@@ -293,7 +293,7 @@ function goToLocation(position) {
   _currentlocation  = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
     //currentlocationdiv.innerHTML = "Latitude: " + position.coords.latitude +  "<br>Longitude: " + position.coords.longitude;
 
-  _currentlocation = getRandomLocation().location;
+  //_currentlocation = getRandomLocation().location;
  var data  = [ { location:_currentlocation, weight: 1}];
  _map.panTo(_currentlocation);
 
@@ -310,7 +310,7 @@ saveMood();
 
  
 }
-
+/*
 function getRandomLocation() {
 
 
@@ -363,7 +363,7 @@ function getRandomLocation() {
 
 }
 
-
+*/
 
 //jQuery( document ).ready( function( $ ) {
  
@@ -424,13 +424,13 @@ else
 var msg = '';
 switch(mood){
 case 'happy': 
-msg = 'Happy Like a room without a roof! Login to view and manage your mood history.';
+msg = 'Happy Like a room without a roof!';
 break;
 case 'sad': 
-msg = 'Do not reply when you are angry, do not decide when you are sad. Hang in there buddy! Login to view and manage your mood history.';
+msg = 'Do not reply when you are angry, do not decide when you are sad. Hang in there buddy!';
 break;
 case 'meh': 
-msg = 'Really? Login to view and manage your mood history.';
+msg = 'Meh ... really?.';
 break;
 default: 
 msg = '';
