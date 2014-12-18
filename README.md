@@ -4,20 +4,17 @@
 <http://p4.ogaye.me>
 
 ## Description
-Moods is a web based application that tracks, in real time, the current mood of its users. 
-It provides a dashboard where anyone can see the general mood in different parts of the world.
-No login is required to enter user’s mood. A logged in user can view and manage their historical mood entries. A user can only manage the moods they entered after login.
-
+Moods is a fun, mapping application where users can update their current mood and track the moods of others around the globe using geolocation features. 
 ## Demo
 Live demo to be performed during section.
 
 ## Details for teaching team
-* On the homepage dashboard, click on the image that reflects the current mood
-* The mood created in database and reflected on the map using the current geolocation. Location tracking has to be enabled on the browser for this to work. 
+* On the homepage dashboard, click on the image that reflects the current mood. This action **CREATES** the mood in the database and also updates the mood on the map using the current geolocation. 
+*When a new mood entry is made from the same geolocation, the new entry **UPDATES** and overwrites the old one.
+* Login is required to **VIEW** and **DELETE** moods from My Moods tab. Please create a user account first.
+* Geolocation tracking has to be enabled on the browser for tracking to work. 
 * Green is happy, red is sad and yellow is meh. 
-* Login not required to enter a mood.
-*When two entries are made from the same geolocation, the new entry updates and overwrites the old one.
-* Login required to view and delete mood entries from My Moods tab. Please create a user account first.
+* Login is not required to enter a mood.
 
 ## Outside code
 * Bootstrap: http://getbootstrap.com/
@@ -26,4 +23,4 @@ Live demo to be performed during section.
 * Font Awesome: http://fontawesome.io/
 * Google Developers: https://developers.google.com/maps/
 
-
+ 
