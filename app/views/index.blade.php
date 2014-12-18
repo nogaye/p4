@@ -31,7 +31,7 @@
       <button onclick="changeOpacity()">Change opacity</button>
     </div>
 -->
-
+ <div style="display:none" id="info_flash" class='alert alert-info'></div>
 <div id="current_location"></d>
     <div id="parent_container" style="width:100%; height:100%" >
       
@@ -182,7 +182,7 @@ var mapcenter = sanFrancisco;
 
 //wait for a second, then set heatmap
  sleep(1000, function () { 
-getLocations();
+getMoods();
         });
 
 
@@ -195,9 +195,125 @@ getLocations();
  
 }
 
-function getLocations()
+
+
+
+
+ var _happylocations = [];
+  var _sadlocations = [];
+  var _mehlocations = [];
+
+function getMoods()
 {
- /*
+ 
+
+  _locations = [];
+  _happylocations = [];
+  _sadlocations = [];
+  _mehlocations = [];
+
+ 
+   $.ajax({
+     type: "get",
+     dataType: 'json',
+     url: '/mood',
+           data: '',          
+           success: function(data) {
+
+                for (var mood in data.moods) 
+                {
+                  
+                  var loc = data.moods[mood];
+                //console.log(data.moods[mood]);
+
+                var pos = new google.maps.LatLng(loc.lat, loc.lng);
+                _locations.push({location: pos, weight: 1, mood: loc.mood});
+
+
+                if(loc.mood == _happy)
+                {
+                  _happylocations.push(pos);
+                }
+                 if(loc.mood == _meh)
+                {
+                  _mehlocations.push(pos);
+                }
+                 if(loc.mood == _sad)
+                {
+                  _sadlocations.push(pos);
+                }
+
+               //var posArray  = [ { location:pos, weight: 1}];
+
+                //setHeatMaps(loc.mood,posArray);
+                     
+                }
+
+//we do thi in groups since individualy takes too long
+                setHeatMaps(_sad,_sadlocations);
+                 setHeatMaps(_meh,_mehlocations);
+                 setHeatMaps(_happy,_happylocations);
+              },
+              error: function(xhr, status, error){               
+              alert(error);
+              }
+            });
+
+
+
+}
+
+/*
+function renderMood(mood)
+{
+
+//getdata
+var data = getData(mood);
+//sethetmaps
+setHeatMaps(mood,data);
+
+//fusion table
+  //setFusionTableLayer();
+}
+*/
+var currentlocationdiv = document.getElementById("current_location");
+
+function getLocation() {
+    if (navigator.geolocation) {
+       navigator.geolocation.getCurrentPosition(goToLocation);
+    } else {
+        currentlocationdiv.innerHTML = "Geolocation is not supported by this browser.";
+    }
+}
+
+var _currentlocation;
+function goToLocation(position) {
+
+//var currentlocation = new google.maps.LatLng(-25, 133);
+  _currentlocation  = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+    //currentlocationdiv.innerHTML = "Latitude: " + position.coords.latitude +  "<br>Longitude: " + position.coords.longitude;
+
+  _currentlocation = getRandomLocation().location;
+ var data  = [ { location:_currentlocation, weight: 1}];
+ _map.panTo(_currentlocation);
+
+ //wait for a second, then set heatmap
+ sleep(1000, function () { 
+    //_map.setZoom(1);
+    _map.setZoom(3);
+        //sethetmaps
+setHeatMaps(_mood,data); 
+
+//save mood
+saveMood();
+        });
+
+ 
+}
+
+function getRandomLocation() {
+
+
   var locations= [
   //chicago
 {location: new google.maps.LatLng(41.948766, -87.691497), weight: 1, mood: _happy},
@@ -240,114 +356,9 @@ function getLocations()
   {location: new google.maps.LatLng(-25, 133), weight: 1, mood: _happy}
 
 ];
-*/
-
-  _locations = [];
-  var happylocations = [];
-  var sadlocations = [];
-  var mehlocations = [];
-
- 
-   $.ajax({
-     type: "get",
-     dataType: 'json',
-     url: '/mood',
-           data: '',          
-           success: function(data) {
-
-                for (var mood in data.moods) 
-                {
-                  
-                  var loc = data.moods[mood];
-                //console.log(data.moods[mood]);
-
-                var pos = new google.maps.LatLng(loc.lat, loc.lng);
-                _locations.push({location: pos, weight: 1, mood: loc.mood});
 
 
-                if(loc.mood == _happy)
-                {
-                  happylocations.push(pos);
-                }
-                 if(loc.mood == _meh)
-                {
-                  mehlocations.push(pos);
-                }
-                 if(loc.mood == _sad)
-                {
-                  sadlocations.push(pos);
-                }
-
-               //var posArray  = [ { location:pos, weight: 1}];
-
-                //setHeatMaps(loc.mood,posArray);
-                     
-                }
-
-//we do thi in groups since individualy takes too long
-                setHeatMaps(_sad,sadlocations);
-                 setHeatMaps(_meh,mehlocations);
-                 setHeatMaps(_happy,happylocations);
-              },
-              error: function(xhr, status, error){               
-              alert(error);
-              }
-            });
-
-
-
-}
-
-/*
-function renderMood(mood)
-{
-
-//getdata
-var data = getData(mood);
-//sethetmaps
-setHeatMaps(mood,data);
-
-//fusion table
-  //setFusionTableLayer();
-}
-*/
-var currentlocationdiv = document.getElementById("current_location");
-
-function getLocation() {
-    if (navigator.geolocation) {
-       navigator.geolocation.getCurrentPosition(goToLocation);
-    } else {
-        currentlocationdiv.innerHTML = "Geolocation is not supported by this browser.";
-    }
-}
-
-var _currentlocation;
-function goToLocation(position) {
-
-//var currentlocation = new google.maps.LatLng(-25, 133);
-  _currentlocation  = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-    //currentlocationdiv.innerHTML = "Latitude: " + position.coords.latitude +  "<br>Longitude: " + position.coords.longitude;
-
-  //_currentlocation = getRandomLocation().location;
- var data  = [ { location:_currentlocation, weight: 1}];
- _map.panTo(_currentlocation);
-
- //wait for a second, then set heatmap
- sleep(1000, function () { 
-    //_map.setZoom(1);
-    _map.setZoom(3);
-        //sethetmaps
-setHeatMaps(_mood,data); 
-
-//save mood
-saveMood();
-        });
-
- 
-}
-
-function getRandomLocation() {
-   return _locations[Math.floor(Math.random() * _locations.length)];
+   return locations[Math.floor(Math.random() * _locations.length)];
 
 
 }
@@ -372,7 +383,7 @@ function saveMood()
                 //alert(data.data.lat);
               },
               error: function(xhr, status, error){               
-              //alert(error);
+              alert(error);
               }
             });
 }
@@ -380,8 +391,13 @@ function saveMood()
 //moodSelected
 var _mood;
 var _minutes;
+var _moodchange = 0;
 function moodSelected(mood)
 {
+
+
+_moodchange = _moodchange +1;
+
 
 var curdate = new Date();
 var minutes = curdate.getMinutes();
@@ -391,13 +407,12 @@ if(_minutes)
 
 var wait = minutes - _minutes;
 
-if(wait<5)
+if(wait<2 && _moodchange>3)
 {
 
-$("#info_flash").html("Research shows that a person takes at least 5 minutes to change their mood. Give it time! Yeah, I made that up to avoid spams. Seriously though, wait for 5 minutes.");
+$("#info_flash").html("Research shows that a human being can only change their mood 3 times in 1 minute. Yeah, I made that up to avoid spam. Refresh your browser if you find this an interesting game. Only your most recent mood will be shown.");
 $("#info_flash").show();
- 
- return;
+   return;
 }
 
 }
@@ -405,6 +420,27 @@ else
 {
   _minutes  = minutes;
 }
+
+var msg = '';
+switch(mood){
+case 'happy': 
+msg = 'Happy Like a room without a roof! Login to view and manage your mood history.';
+break;
+case 'sad': 
+msg = 'Do not reply when you are angry, do not decide when you are sad. Hang in there buddy! Login to view and manage your mood history.';
+break;
+case 'meh': 
+msg = 'Really? Login to view and manage your mood history.';
+break;
+default: 
+msg = '';
+break;
+}
+
+$("#info_flash").html(msg);
+$("#info_flash").show();
+ 
+
 
 
 _mood = mood;
@@ -587,10 +623,13 @@ function drawCustomMap(lat, long, zoom) {
 /*-----------------
 setHeatMaps
 --------------------*/
+
+var _heatmap;
+
 function setHeatMaps(mood,data)
 {
 
-var heatmap = new google.maps.visualization.HeatmapLayer({
+_heatmap = new google.maps.visualization.HeatmapLayer({
  data: data
 });
 
@@ -600,8 +639,9 @@ var gradient = _defaultgradient;
 
 switch(mood){
 case 'happy': 
+
 gradient = _happygradient;
-break;
+break;     
 case 'sad': 
 gradient = _sadgradient;
 break;
@@ -613,11 +653,9 @@ gradient = _defaultgradient;
 break;
 }
 
-heatmap.set('gradient',  gradient);
-
-heatmap.set('radius',  100);
-
-heatmap.setMap(_map);
+_heatmap.set('gradient',  gradient);
+_heatmap.set('radius',  25);
+_heatmap.setMap(_map);
 
 }
 

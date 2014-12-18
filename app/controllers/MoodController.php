@@ -67,9 +67,9 @@ $data = Input::all();
 
 
 # Instantiate the mood model
-$mood = new Mood();
+//$mood = new Mood();
 
-//$mood = Mood::firstOrNew(array('lat' => $data->lat, 'lng' => $data->lng ));
+$mood = Mood::firstOrNew(array('lat' => $data['lat'], 'lng' =>$data['lng'] ));
 // $moods = Mood.where('lat', '=', $data->lat)->where('lng', '=', $data->lng)->get();
 
 $mood_type = MoodType::where('name','=',$data['mood'])->first();
@@ -104,7 +104,68 @@ return Response::json( $response );
 
 }
 
+/**
+	* Show edit mood screen
+	* @return View
+	*/
+	public function getEdit($id) {
 
+		try {
+		    $mood    = Mood::findOrFail($id);
+		}
+		catch(exception $e) {
+		    return Redirect::to('/moods')->with('flash_message', 'Mood not found');
+		}
+
+    	return View::make('moods')
+    		->with('moods', $mood);
+
+	}
+
+
+	/**
+	* Edit mood
+	* @return Redirect
+	*/
+	public function postEdit() {
+
+		try {
+	        $mood = Mood::findOrFail(Input::get('id'));
+	    }
+	    catch(exception $e) {
+	        return Redirect::to('/moods')->with('flash_message', 'Mood not found');
+	    }
+
+	    # http://laravel.com/docs/4.2/eloquent#mass-assignment
+	    $mood->fill(Input::all());
+	    $mood->save();
+
+	    return Redirect::to('/moods')->with('flash_message', 'Your changes have been saved');
+
+
+	}
+
+
+	/**
+	* Delete mood
+	*
+	* @return Redirect
+	*/
+	public function getDelete($id) {
+
+		try {
+	        $mood = Mood::findOrFail($id);
+	    }
+	    catch(exception $e) {
+	        return Redirect::to('/mymood')->with('flash_message', 'Could not delete mood. Mood not found.');
+	    }
+
+	    Mood::destroy($id);
+
+	    return Redirect::to('/mymood')->with('flash_message', 'Mood deleted.');
+
+	}
 
 
 }
+

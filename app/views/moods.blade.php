@@ -19,11 +19,14 @@
 
    
 <div class="row">
-<div class="col-md-6">
+<div class="col-md-4">
 <b>Date</b>
 </div>
-<div class="col-md-6">
+<div class="col-md-4">
 <b>Mood</b>
+</div>
+<div class="col-md-4">
+<b>Delete</b>
 </div>
 </div>
 
@@ -32,11 +35,15 @@
 
 
 <div class="row">
-<div class="col-md-6">
+<div class="col-md-4">
 {{ $mood->created_at }}
 </div>
-<div class="col-md-6">
+<div class="col-md-4">
 {{ $mood->mood }}
+</div>
+<div class="col-md-4">
+		<a href='/mood/delete/{{$mood['id']}}'>Delete</a>
+
 </div>
 </div>
 

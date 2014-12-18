@@ -30,10 +30,11 @@
             
  <nav>
         <ul class="nav nav-pills pull-right">
-            <li class="active"><a href="/">Home</a></li>
-            <li><a href='/debug'>Debug</a></li>
+            <li ><a href="/">Home</a></li>
+            
         @if(Auth::check())
            <!-- 
+           <li class="active"><a href='/debug'>Debug</a></li>
             <li><a href='/book'>All Books</a></li>
             <li><a href='/book/search'>Search Books (w/ Ajax)</a></li>
             <li><a href='/tag'>All Tags</a></li>
@@ -41,7 +42,7 @@
             <li><a href='/debug/routes'>Routes</a></li>
         -->
         <li><a href='/mymood'>My Moods</a></li>
-        <li><a href='/logout'>Log Out: {{ Auth::user()->first_name; }}</a></li>
+        <li><a href='/logout'>Log Out : {{ Auth::user()->email; }}</a></li>
         @else           
             
            <!-- <li><a href="/users">Users</a></li>
@@ -53,14 +54,14 @@
         @endif
         </ul>
     </nav>
-
+ <a href="/">
              <h3 class="text-muted" style="color:#2d6ca2"> <span  class="fa fa-users fa-3x"></span>
-             <b style="color:#5cb85c">M</b>oo<b style="color:#ec971f">d</b><b style="color:#d9534f">s</b>: How are you feeling today?</h3>
+             <b style="color:#5cb85c">M</b>oo<b style="color:#ec971f">d</b><b style="color:#d9534f">s</b>: How are you feeling today?</h3></a>
             <hr/>
               @if(Session::get('flash_message'))
-        <div class='alert alert-warning'>{{ Session::get('flash_message') }}</div>
+        <div class='alert alert-info'>{{ Session::get('flash_message') }}</div>
     @endif
-        <div style="display:none" id="info_flash" class='alert alert-warning'></div>
+       
         </div>
 
 

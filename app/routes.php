@@ -37,6 +37,12 @@ Route::get('/logout', 'UserController@getLogout' );
 Route::get('/mymood', 'MoodController@getUserMoods');
 Route::get('/mood', 'MoodController@getMoods');
 Route::post('/mood/create', 'MoodController@postCreate');
+
+Route::get('/mood/edit/{id}', 'MoodController@getEdit');
+Route::post('/mood/edit', 'MoodController@postEdit');
+Route::get('/mood/delete/{id}', 'MoodController@getDelete');
+
+
 /**
 * Debug
 */
